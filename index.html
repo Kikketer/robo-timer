@@ -14,45 +14,54 @@
       font-family: 'Arial Black', Arial, sans-serif;
       width: 100vw;
       height: 100vh;
+      overflow: hidden;
     }
     body {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       box-sizing: border-box;
+      position: relative;
     }
     #timer {
-      font-size: 10vw;
-      letter-spacing: 0.1em;
-      margin-bottom: 2vw;
+      font-size: 35vw;
+      letter-spacing: 0.05em;
       text-align: center;
       user-select: none;
+      line-height: 1;
     }
     #controls {
+      position: fixed;
+      left: 2vw;
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
-      gap: 2vw;
-      margin-top: 2vw;
+      flex-direction: column;
+      gap: 1.5vw;
     }
     button {
-      font-size: 3vw;
+      font-size: 1.5vw;
       background: #222;
       color: #fff;
       border: none;
-      padding: 1vw 2vw;
-      border-radius: 1vw;
+      padding: 0.8vw 1.5vw;
+      border-radius: 0.5vw;
       cursor: pointer;
       font-family: inherit;
       transition: background 0.2s;
+      min-width: 8vw;
     }
     button:hover {
       background: #444;
     }
+    button.hidden {
+      display: none;
+    }
     @media (max-width: 600px) {
-      #timer { font-size: 15vw; }
-      button { font-size: 5vw; }
-      #controls { gap: 4vw; }
+      #timer { font-size: 25vw; }
+      button { font-size: 3vw; min-width: 15vw; }
+      #controls { gap: 3vw; }
     }
   </style>
 </head>
@@ -85,6 +94,14 @@
       timerEl.textContent = `${m}:${pad(s)}`;
     }
 
+    function updateButtonVisibility() {
+      if (running) {
+        startBtn.classList.add('hidden');
+      } else {
+        startBtn.classList.remove('hidden');
+      }
+    }
+
     function playBeep() {
       // Simple beep using WebAudio; guaranteed to work without files
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -104,6 +121,7 @@
       if (running) return;
       if (timeLeft <= 0) return;
       running = true;
+      updateButtonVisibility();
       interval = setInterval(function() {
         if (timeLeft > 0) {
           timeLeft--;
@@ -112,6 +130,7 @@
             running = false;
             clearInterval(interval);
             updateDisplay();
+            updateButtonVisibility();
             playBeep();
           }
         }
@@ -122,12 +141,14 @@
       if (!running) return;
       running = false;
       if (interval) clearInterval(interval);
+      updateButtonVisibility();
     }
 
     function resetTimer() {
       pauseTimer();
       timeLeft = duration;
       updateDisplay();
+      updateButtonVisibility();
     }
 
     startBtn.onclick = startTimer;
@@ -135,6 +156,7 @@
     resetBtn.onclick = resetTimer;
 
     updateDisplay();
+    updateButtonVisibility();
   </script>
 </body>
 </html>
