@@ -38,6 +38,29 @@
       justify-content: center;
       flex: 1;
       max-height: 80vh;
+      cursor: pointer;
+    }
+    #timer.editing {
+      cursor: default;
+    }
+    #timer input {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #555;
+      color: #fff;
+      font-size: inherit;
+      font-family: inherit;
+      text-align: center;
+      outline: none;
+      width: 1.2em;
+      padding: 0;
+      margin: 0;
+    }
+    #timer input:focus {
+      border-bottom-color: #0af;
+    }
+    #timer .colon {
+      margin: 0 0.1em;
     }
     #controls {
       display: flex;
@@ -86,6 +109,7 @@
     let timeLeft = duration;
     let running = false;
     let interval = null;
+    let isEditing = false;
 
     const timerEl = document.getElementById('timer');
     const startBtn = document.getElementById('start');
@@ -97,6 +121,7 @@
     }
 
     function updateDisplay() {
+      if (isEditing) return; // Don't update display while editing
       const m = Math.floor(timeLeft / 60);
       const s = timeLeft % 60;
       timerEl.textContent = `${m}:${pad(s)}`;
@@ -158,6 +183,101 @@
       updateDisplay();
       updateButtonVisibility();
     }
+
+    function enableEditMode() {
+      if (running || isEditing) return; // Don't edit while timer is running or already editing
+      isEditing = true;
+      timerEl.classList.add('editing');
+      
+      const m = Math.floor(timeLeft / 60);
+      const s = timeLeft % 60;
+      
+      // Create input elements
+      timerEl.innerHTML = `
+        <input type="text" id="minutesInput" value="${m}" maxlength="2" />
+        <span class="colon">:</span>
+        <input type="text" id="secondsInput" value="${pad(s)}" maxlength="2" />
+      `;
+      
+      const minutesInput = document.getElementById('minutesInput');
+      const secondsInput = document.getElementById('secondsInput');
+      
+      // Focus and select minutes input
+      minutesInput.focus();
+      minutesInput.select();
+      
+      // Handle input validation and navigation
+      function handleInput(e) {
+        const input = e.target;
+        const value = input.value;
+        
+        // Only allow digits
+        if (!/^\d*$/.test(value)) {
+          input.value = value.replace(/\D/g, '');
+        }
+      }
+      
+      function handleKeyDown(e) {
+        if (e.key === 'Enter') {
+          disableEditMode(true);
+        } else if (e.key === 'Escape') {
+          disableEditMode(false);
+        }
+      }
+      
+      minutesInput.addEventListener('input', handleInput);
+      secondsInput.addEventListener('input', handleInput);
+      minutesInput.addEventListener('keydown', handleKeyDown);
+      secondsInput.addEventListener('keydown', handleKeyDown);
+      
+      // Handle blur to save changes
+      function handleBlur(e) {
+        // Delay to allow clicking on the other input
+        setTimeout(() => {
+          if (document.activeElement !== minutesInput && document.activeElement !== secondsInput) {
+            disableEditMode(true);
+          }
+        }, 100);
+      }
+      
+      minutesInput.addEventListener('blur', handleBlur);
+      secondsInput.addEventListener('blur', handleBlur);
+    }
+
+    function disableEditMode(save) {
+      if (!isEditing) return;
+      
+      const minutesInput = document.getElementById('minutesInput');
+      const secondsInput = document.getElementById('secondsInput');
+      
+      if (save && minutesInput && secondsInput) {
+        let minutes = parseInt(minutesInput.value) || 0;
+        let seconds = parseInt(secondsInput.value) || 0;
+        
+        // Validate ranges
+        if (minutes > 59) minutes = 59;
+        if (minutes < 0) minutes = 0;
+        if (seconds > 59) seconds = 59;
+        if (seconds < 0) seconds = 0;
+        
+        // Prevent 0:0
+        if (minutes === 0 && seconds === 0) {
+          minutes = 0;
+          seconds = 1;
+        }
+        
+        // Update duration and timeLeft
+        duration = minutes * 60 + seconds;
+        timeLeft = duration;
+      }
+      
+      isEditing = false;
+      timerEl.classList.remove('editing');
+      updateDisplay();
+    }
+
+    // Add click handler to timer
+    timerEl.addEventListener('click', enableEditMode);
 
     startBtn.onclick = startTimer;
     pauseBtn.onclick = pauseTimer;
