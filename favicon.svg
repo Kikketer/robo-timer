@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Outer gear/cog ring (steampunk style) -->
+  <circle cx="32" cy="32" r="30" fill="#8B6F47" stroke="#654321" stroke-width="2"/>
+  <circle cx="32" cy="32" r="26" fill="#D4A574" stroke="#8B6F47" stroke-width="1.5"/>
+  
+  <!-- Gear teeth -->
+  <path d="M 32 2 L 34 8 L 30 8 Z" fill="#654321"/>
+  <path d="M 62 32 L 56 34 L 56 30 Z" fill="#654321"/>
+  <path d="M 32 62 L 30 56 L 34 56 Z" fill="#654321"/>
+  <path d="M 2 32 L 8 30 L 8 34 Z" fill="#654321"/>
+  
+  <!-- Clock face -->
+  <circle cx="32" cy="32" r="22" fill="#F5DEB3" stroke="#8B6F47" stroke-width="2"/>
+  
+  <!-- Hour markers -->
+  <line x1="32" y1="12" x2="32" y2="16" stroke="#654321" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="32" x2="46" y2="32" stroke="#654321" stroke-width="2" stroke-linecap="round"/>
+  <line x1="32" y1="52" x2="32" y2="48" stroke="#654321" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="32" x2="18" y2="32" stroke="#654321" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Clock hands -->
+  <line x1="32" y1="32" x2="32" y2="20" stroke="#2C1810" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="32" y1="32" x2="40" y2="32" stroke="#2C1810" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Center rivet -->
+  <circle cx="32" cy="32" r="3" fill="#654321" stroke="#2C1810" stroke-width="1"/>
+  
+  <!-- Steampunk rivets on outer ring -->
+  <circle cx="32" cy="6" r="2" fill="#654321"/>
+  <circle cx="58" cy="32" r="2" fill="#654321"/>
+  <circle cx="32" cy="58" r="2" fill="#654321"/>
+  <circle cx="6" cy="32" r="2" fill="#654321"/>
+</svg>
