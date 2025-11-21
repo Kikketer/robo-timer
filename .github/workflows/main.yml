@@ -39,4 +39,4 @@ jobs:
         run: |
           git add README.md
           git commit -m "Update README with random number [skip ci]" || exit 0
-          git push origin main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
