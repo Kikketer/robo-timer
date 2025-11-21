@@ -25,8 +25,8 @@ jobs:
         uses: tibdex/github-app-token@v2
         id: app-token
         with:
-          app_id: ${{ secrets.MY_GITHUB_APP_ID }}
-          private_key: ${{ secrets.MY_GITHUB_APP_PRIVATE_KEY }}
+          app_id: ${{ secrets.WARG_APP_ID }}
+          private_key: ${{ secrets.WARG_SECRET }}
 
       - name: Configure git
         run: |
