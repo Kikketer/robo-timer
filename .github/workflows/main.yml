@@ -32,7 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          curl -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/user
+          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/app
 
       - name: Configure git
         run: |
