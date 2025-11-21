@@ -31,19 +31,19 @@ jobs:
 
       - name: Echo whoami for token
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/app
+          curl -H "Authorization: Bearer ${APP_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/app
 
       - name: Configure git
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'perm-warg[bot]'
+          git config user.email 'perm-warg[bot]@users.noreply.github.com'
 
       - name: Commit and push updated README.md
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           git add README.md
           git commit -m "Update README with random number [skip ci]" || exit 0
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+          git push https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
