@@ -22,12 +22,12 @@ jobs:
           RANDOM_NUM=$((RANDOM))
           echo "Random Number: $RANDOM_NUM" > README.md
 
-      - name: Commit and push changes (as GitHub App)
-        uses: tibdex/github-app-token@v2
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app_id: ${{ secrets.WARG_APP_ID }}
-          private_key: ${{ secrets.WARG_SECRET }}
+          app-id: ${{ secrets.WARG_APP_ID }}
+          private-key: ${{ secrets.WARG_SECRET }}
 
       - name: Echo whoami for token
         env:
